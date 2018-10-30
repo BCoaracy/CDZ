@@ -202,6 +202,42 @@ namespace CDZ
             }
             return null;
         }
+        
+        public void cvsParaSQL()
+        {//10 maiores magnitudes
+            StreamReader stream = new StreamReader(@"D:\\Facul\\Persistencia\\hypparcos\\hygdata\\hygdata_v3.csv");
+            List<Star> listaEstrelas = new List<Star>();
+
+            try
+            {
+                string linha = null;
+                string[] coluna = null;
+                stream.ReadLine();
+
+                while (stream.ReadLine()!=null)
+                {
+                    linha = stream.ReadLine();
+                    coluna = linha.Split(',');
+                    Star star = new Star(coluna[0],coluna[1],coluna[2],coluna[3],coluna[4],coluna[5],coluna[6],coluna[7],coluna[8],coluna[9],coluna[10],coluna[11],coluna[12],coluna[13],coluna[14],coluna[15],coluna[16],coluna[17],coluna[18],coluna[19],coluna[20],coluna[21],coluna[22],coluna[23],coluna[24],coluna[25],coluna[26],coluna[27],coluna[28],coluna[29],coluna[30],coluna[31]);
+                    listaEstrelas.Add(star)
+
+                }
+
+                
+
+                var listaOrdenada = listaEstrelas.OrderByDescending(m => m.getMag());
+
+                for (int i = 0; i < listaOrdenada.Count(); i++)
+                {
+                    Star estrela = listaOrdenada.ElementAt(i);
+
+                    Console.WriteLine("id: " + estrela.getId() + " Magnitude: " + estrela.getMag() + " Nome: " + estrela.getNome());
+                    
+                }
+
+                return listaOrdenada.ToList();
+
+            }
 
         public void cvsParaSQL()
         {

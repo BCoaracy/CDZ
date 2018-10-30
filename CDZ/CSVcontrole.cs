@@ -41,7 +41,7 @@ namespace CDZ
                     Star estrela = listaOrdenada.ElementAt(i);
 
                     Console.WriteLine("id: " + estrela.getId() + " Magnitude: " + estrela.getMag() + " Nome: " + estrela.getNome());
-                    
+
                 }
 
                 return listaOrdenada.ToList();
@@ -157,7 +157,7 @@ namespace CDZ
                 {
                     linha = reader.ReadLine();
                     coluna = linha.Split(',');
-                    
+
                     if (coluna[29].Equals(constelacao))
                     {
                         listaConstelacao.Add(coluna);
@@ -174,25 +174,26 @@ namespace CDZ
             finally
             {
                 reader.Close();
-                
+
             }
         }
+
         public string[] agulhaEscarlate()
         {
             List<string[]> listaSco = new List<string[]>();
             listaSco = pesquisaConstelacao("Sco");
 
-           
+
 
             List<Star> starScoList = new List<Star>();
-            foreach(var estrela in listaSco)
+            foreach (var estrela in listaSco)
             {
                 Star star = new Star(estrela[0], estrela[6], Convert.ToDouble(estrela[13], CultureInfo.InvariantCulture));
                 starScoList.Add(star);
             }
             var listaScoOrdenada = starScoList.OrderBy(x => x.getMag());
-            var id  = listaScoOrdenada.First().getId();
-            foreach(var estrela in listaSco)
+            var id = listaScoOrdenada.First().getId();
+            foreach (var estrela in listaSco)
             {
                 if (id.Equals(estrela[0]))
                 {
@@ -202,49 +203,95 @@ namespace CDZ
             return null;
         }
 
-    }
-
-    class Star {
-
-        string id { get; set; }
-        string proper { get; set; }
-        double mag { get; set; }
-        double dist { get; set; }
-
-        public Star(string i, string nome, double magnitude)
+        public void cvsParaSQL()
         {
-            this.id = i;
-            this.proper = nome;
-            this.mag = magnitude;
-        }
+            StreamReader stream = new StreamReader(@"D:\\Facul\\Persistencia\\hypparcos\\hygdata\\hygdata_v3.csv");
+            List<string[]> listaEstrelas = new List<string[]>();
 
-        public Star(string i, string nome, double magnitude, double distancia)
-        {
-            this.id = i;
-            this.proper = nome;
-            this.mag = magnitude;
-            this.dist = distancia;
-        }
-
-        public double getMag()
-        {
-            return this.mag;
-        }
-
-        public string getNome()
-        {
-            return this.proper;
-        }
-
-        public string getId()
-        {
-            return this.id;
-        }
-
-        public double getDist()
+            try
             {
-                return this.dist;
-            }
-    }
+                string linha = null;
+                string[] coluna = null;
+                stream.ReadLine();
 
+                //linha = stream.ReadLine();
+                //coluna = linha.Split(',');
+                //string[] estrela = { coluna[0], coluna[1], coluna[2], coluna[3], coluna[4], coluna[5], coluna[6], coluna[7], coluna[8],
+                //        coluna[9], coluna[10], coluna[11], coluna[12], coluna[13], coluna[14], coluna[15], coluna[16], coluna[17], coluna[18],
+                //        coluna[19], coluna[20], coluna[21], coluna[22], coluna[23], coluna[24], coluna[25], coluna[26], coluna[27], coluna[28],
+                //        coluna[29], coluna[30], coluna[31], coluna[32], coluna[33], coluna[34], coluna[35], coluna[36] };
+                //listaEstrelas.Add(estrela);
+
+                while (stream.ReadLine() != null)
+                {
+                    linha = stream.ReadLine();
+                    coluna = linha.Split(',');
+                    string[] estrelas = { coluna[0], coluna[1], coluna[2], coluna[3], coluna[4], coluna[5], coluna[6], coluna[7], coluna[8],
+                        coluna[9], coluna[10], coluna[11], coluna[12], coluna[13], coluna[14], coluna[15], coluna[16], coluna[17], coluna[18],
+                        coluna[19], coluna[20], coluna[21], coluna[22], coluna[23], coluna[24], coluna[25], coluna[26], coluna[27], coluna[28],
+                        coluna[29], coluna[30], coluna[31], coluna[32], coluna[33], coluna[34], coluna[35], coluna[36] };
+                    listaEstrelas.Add(estrelas);
+
+                }
+
+                var conexao = new ConexaoSQL();
+                conexao.insertSql(listaEstrelas);
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Erro: " + e);
+            }
+        }
+
+        //public class Star
+        //{
+
+        //    string id { get; set; }
+        //    string proper { get; set; }
+        //    double mag { get; set; }
+        //    double dist { get; set; }
+
+        //    public Star()
+        //    {
+
+        //    }
+
+        //    public Star(string i, string nome, double magnitude)
+        //    {
+        //        this.id = i;
+        //        this.proper = nome;
+        //        this.mag = magnitude;
+        //    }
+
+        //    public Star(string i, string nome, double magnitude, double distancia)
+        //    {
+        //        this.id = i;
+        //        this.proper = nome;
+        //        this.mag = magnitude;
+        //        this.dist = distancia;
+        //    }
+
+        //    public double getMag()
+        //    {
+        //        return this.mag;
+        //    }
+
+        //    public string getNome()
+        //    {
+        //        return this.proper;
+        //    }
+
+        //    public string getId()
+        //    {
+        //        return this.id;
+        //    }
+
+        //    public double getDist()
+        //    {
+        //        return this.dist;
+        //    }
+        //}
+    }
 }
+

@@ -19,8 +19,10 @@ namespace CDZ
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
             txtSaida.Text = null;
             var csv = new CSVcontrole();
+            //var star = new CSVcontrole.Star();
             List<Star> starsList = csv.DezMagnitudes();
             foreach(var s in starsList)
             {
@@ -75,5 +77,13 @@ namespace CDZ
         {
 
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            EditaEstrelas ed = new EditaEstrelas();            
+                ed.Visible = true;
+        }
+
+
     }
 }
